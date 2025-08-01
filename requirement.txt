@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+asyncpg
+python-dotenv
+alembic
+pydantic
+langchain
+chromadb
+openai
