@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.core.database import SessionLocal
 from app.models.user import User
 from app.schemas.user import UserCreate, UserOut
+from app.utils.security import hash_password
 
 router = APIRouter()
 
@@ -19,8 +20,9 @@ def read_users(db: Session = Depends(get_db)):
     return db.query(User).all()
 @router.get("/")
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    new_user = User(username=user.username, email=user.email)
-    db.add(new_user)
+     hashed_pw = hash_password(user.password)
+    db_user = User(username=user.username, email=user.email, password=hashed_pw)
+    db.add(db_user)
     db.commit()
-    db.refresh(new_user)
-    return new_user
+    db.refresh(db_user)
+    return db_user
