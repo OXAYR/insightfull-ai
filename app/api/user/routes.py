@@ -20,8 +20,13 @@ def read_users(db: Session = Depends(get_db)):
     return db.query(User).all()
 @router.post("/")
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    hashed_pw = hash_password(user.password)
-    db_user = User(username=user.username, email=user.email, password=hashed_pw)
+    # Check if email already exists
+    existing_user = db.query(models.User).filter(models.User.email == user.email).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+
+    hashed_password = hash_password(user.password)
+    db_user = models.User(username=user.username, email=user.email, password=hashed_password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
