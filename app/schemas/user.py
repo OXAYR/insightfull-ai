@@ -1,5 +1,7 @@
 from pydantic import BaseModel, EmailStr
 
+# In Fast api schemas work as transformer like in other frameworks that it will provide the data only what we required
+
 # For creating a new user
 class UserCreate(BaseModel):
     username: str
@@ -14,3 +16,7 @@ class UserOut(BaseModel):
 
     class Config:
         orm_mode = True  # This tells Pydantic to convert from ORM models to JSON
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
