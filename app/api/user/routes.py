@@ -18,7 +18,7 @@ def get_db():
 @router.get("/users/")
 def read_users(db: Session = Depends(get_db)):
     return db.query(User).all()
-@router.get("/")
+@router.post("/")
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     hashed_pw = hash_password(user.password)
     db_user = User(username=user.username, email=user.email, password=hashed_pw)
