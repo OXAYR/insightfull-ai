@@ -21,7 +21,7 @@ def read_users(db: Session = Depends(get_db)):
 @router.post("/")
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     # Check if email already exists
-    existing_user = db.query(models.User).filter(models.User.email == user.email).first()
+    existing_user = db.query(User).filter(User.email == user.email).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
